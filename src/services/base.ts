@@ -32,7 +32,7 @@ Axios.interceptors.request.use(
 
 Axios.interceptors.response.use(
     (response) => {
-        return response.data;
+        return response;
     },
     (error) => {
         commonHandler(error);
