@@ -14,12 +14,13 @@ export default function List() {
 
   return (
     <div className="wrapper">
-      <div className="title">
+      <div className="header">
         To Do
         <img
           src="/images/plus.png"
           alt="추가하기"
           onClick={() => navigate("/write")}
+          className="plus"
         />
       </div>
 

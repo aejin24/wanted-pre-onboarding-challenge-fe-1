@@ -1,11 +1,11 @@
-.title {
+.header {
   padding: 20px 16px;
   font-size: 24px;
   color: white;
   background-color: #fc596c;
 }
 
-.title img {
+.plus {
   width: 28px;
   float: right;
   cursor: pointer;

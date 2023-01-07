@@ -10,7 +10,11 @@ export default function Todo() {
       </p>
 
       <div className="todo-options">
-        <img src="/images/edit.png" alt="수정하기" />
+        <img
+          src="/images/edit.png"
+          alt="수정하기"
+          onClick={() => navigate("/update/1")}
+        />
         <img src="/images/trash.png" alt="삭제하기" />
       </div>
     </div>
