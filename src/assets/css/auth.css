@@ -2,7 +2,6 @@
   width: 500px;
   height: fit-content;
   box-shadow: 0 0 5px #2222225f;
-  padding: 0 16px;
   position: relative;
 }
 
@@ -10,6 +9,7 @@
   display: flex;
   font-size: 24px;
   margin: 32px 0 24px;
+  padding: 0 16px;
   color: rgb(170, 170, 170);
 }
 
@@ -37,6 +37,7 @@
 
 .input-wrapper {
   width: 100%;
+  padding: 0 16px;
 }
 
 .input-wrapper input {
