@@ -34,7 +34,7 @@ textarea {
 }
 
 textarea:not(:read-only):focus,
-input[name="title"]:focus {
+input[name="title"]:not(:read-only):focus {
   border-color: #fc596c;
 }
 
