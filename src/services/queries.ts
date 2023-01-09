@@ -7,7 +7,7 @@ const getTodos = async (): Promise<ITodoResponse[]> => {
   return res.data.data;
 };
 
-const getTodo = async (id: number): Promise<ITodoResponse> => {
+const getTodo = async (id: string): Promise<ITodoResponse> => {
   const res = await Axios.get(`/todos/${id}`);
 
   return res.data.data;

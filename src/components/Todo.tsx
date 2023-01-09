@@ -8,6 +8,7 @@ interface Props {
 
 export default function Todo({ todo, mutate }: Props) {
   const navigate = useNavigate();
+
   return (
     <div className="todo-wrapper">
       <p className="todo" onClick={() => navigate(`/detail/${todo.id}`)}>

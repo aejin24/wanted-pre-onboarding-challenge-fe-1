@@ -2,10 +2,11 @@ import "../assets/css/input.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { ITodo, MODE } from "../types/todo";
 import { useState } from "react";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { createTodo, updateTodo } from "../services/mutations";
 import { Loading, Modal } from "../components";
 import { getErrorMessage } from "../utils";
+import { getTodo } from "../services/queries";
 
 interface Props {
   mode: MODE;
@@ -33,6 +34,19 @@ export default function Input({ mode }: Props) {
 
   const createMutation = useMutation(createTodo);
   const updateMutation = useMutation(updateTodo);
+  const { isLoading, isError } = useQuery(
+    ["todo"],
+    async () => {
+      const data = await getTodo(id || "");
+
+      setTodo({
+        ...data,
+      });
+    },
+    {
+      enabled: mode !== "CREATE",
+    }
+  );
 
   const todoHandler = async () => {
     switch (mode) {
@@ -50,12 +64,14 @@ export default function Input({ mode }: Props) {
 
   return (
     <div className="wrapper">
-      {(createMutation.isLoading || updateMutation.isLoading) && <Loading />}
+      {(createMutation.isLoading || updateMutation.isLoading || isLoading) && (
+        <Loading />
+      )}
 
-      {(createMutation.isError || updateMutation.isError) && (
+      {(createMutation.isError || updateMutation.isError || isError) && (
         <Modal
           message={getErrorMessage(
-            createMutation.error || updateMutation.error
+            createMutation.error || updateMutation.error || isError
           )}
         />
       )}
@@ -79,16 +95,14 @@ export default function Input({ mode }: Props) {
       </div>
 
       <p className="title">제목</p>
-      {mode === "READ" ? (
-        <p className="title">something</p>
-      ) : (
-        <input
-          type="text"
-          name="title"
-          placeholder="제목을 입력해주세요"
-          onChange={onChangeHandler}
-        />
-      )}
+      <input
+        type="text"
+        name="title"
+        placeholder="제목을 입력해주세요"
+        onChange={onChangeHandler}
+        readOnly={mode === "READ"}
+        value={todo.title}
+      />
 
       <p className="title">내용</p>
       <textarea
@@ -96,6 +110,7 @@ export default function Input({ mode }: Props) {
         name="content"
         readOnly={mode === "READ"}
         onChange={onChangeHandler}
+        value={todo.content}
       />
 
       {mode !== "READ" && (
