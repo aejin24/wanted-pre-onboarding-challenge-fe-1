@@ -1,5 +1,7 @@
 import { useMutation } from "react-query";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { RDeleteTodo } from "../redux/todoSlice";
 import { deleteTodo } from "../services/mutations";
 import { ITodoResponse } from "../types/todo";
 import { convertGMTtoLocal, getErrorMessage } from "../utils";
@@ -8,10 +10,12 @@ import Modal from "./Modal";
 
 interface Props {
   todo: ITodoResponse;
+  setTargetId: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export default function Detail({ todo }: Props) {
+export default function Detail({ todo, setTargetId }: Props) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const deleteMutation = useMutation(async (id: string) => deleteTodo(id));
 
@@ -36,7 +40,16 @@ export default function Detail({ todo }: Props) {
         <p>{todo.content}</p>
 
         <div className="todo-options">
-          <button onClick={() => deleteMutation.mutate(todo.id || "")}>
+          <button
+            onClick={async () => {
+              await deleteMutation.mutateAsync(todo.id!);
+
+              if (deleteMutation.isSuccess) {
+                dispatch(RDeleteTodo(todo.id!));
+                setTargetId("");
+              }
+            }}
+          >
             삭제하기
           </button>
           <button onClick={() => navigate(`/update/${todo.id}`)}>

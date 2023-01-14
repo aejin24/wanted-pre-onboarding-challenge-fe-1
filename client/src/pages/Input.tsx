@@ -1,12 +1,14 @@
 import "../assets/css/input.css";
 import { useNavigate, useParams } from "react-router-dom";
-import { ITodo, MODE } from "../types/todo";
-import { useState } from "react";
+import { ITodo, ITodoResponse, MODE } from "../types/todo";
+import { useEffect, useState } from "react";
 import { useMutation } from "react-query";
 import { createTodo, updateTodo } from "../services/mutations";
 import { Loading, Modal } from "../components";
 import { getErrorMessage } from "../utils";
-import queryClient from "../config/queryClient";
+import { useDispatch, useSelector } from "react-redux";
+import { RAddTodo, RUpdateTodo } from "../redux/todoSlice";
+import { ReducerType } from "../redux/rootReducer";
 
 interface Props {
   mode: MODE;
@@ -15,12 +17,29 @@ interface Props {
 
 export default function Input({ mode }: Props) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const { id } = useParams();
 
   const [registerTodo, setRegisterTodo] = useState<ITodo>({
     title: "",
     content: "",
   });
+
+  const todos = useSelector<ReducerType, ITodoResponse[]>(
+    (state) => state.todoReducer
+  );
+
+  useEffect(() => {
+    if (id) {
+      const filterTodo = todos.filter((t) => t.id === id)[0];
+
+      setRegisterTodo({
+        title: filterTodo.title,
+        content: filterTodo.content,
+      });
+    }
+  }, [id, todos]);
 
   const onChangeHandler = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -67,10 +86,10 @@ export default function Input({ mode }: Props) {
           message={`${mode === "CREATE" ? "신규 생성" : "수정"} 완료`}
           onClickHandler={() => {
             if (mode === "UPDATE") {
-              queryClient.invalidateQueries({ queryKey: ["todo", id] });
+              dispatch(RUpdateTodo(updateMutation.data as ITodoResponse));
+            } else {
+              dispatch(RAddTodo([createMutation.data] as ITodoResponse[]));
             }
-
-            queryClient.invalidateQueries({ queryKey: ["todos"] });
 
             navigate("/");
           }}
