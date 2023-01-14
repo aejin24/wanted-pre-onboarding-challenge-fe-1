@@ -1,8 +1,11 @@
 .header {
+  width: 1000px;
   padding: 20px 16px;
   font-size: 24px;
   color: white;
   background-color: #fc596c;
+  position: fixed;
+  top: inherit;
 }
 
 .plus {
@@ -43,20 +46,59 @@
 }
 
 .todo {
-  width: 70%;
+  width: 100%;
+  border: 1px solid #cecece;
+  border-radius: 8px;
+  padding: 8px;
   font-size: 24px;
   cursor: pointer;
+  margin-bottom: 24px;
 }
 
 .todo:hover {
   color: #fc596c;
+  border-color: #fc596c;
 }
 
-.todo-options img {
-  width: 25px;
+.todo-options {
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.todo-options button {
+  border: none;
+  width: 100px;
+  height: 50px;
+  border-radius: 8px;
+  color: white;
+  background-color: #fc596c;
   cursor: pointer;
 }
 
-.todo-options img:first-of-type {
+.todo-options button:first-of-type {
   margin-right: 12px;
+  background-color: #1a2980;
+}
+
+.container {
+  display: flex;
+  margin-top: 68px;
+  height: calc(100% - 68px);
+}
+
+.container > div {
+  flex: 1;
+  height: 100%;
+  padding: 16px;
+  overflow: auto;
+}
+
+.container > div:first-of-type {
+  border-right: 1px solid #cecece;
+}
+
+.desc {
+  font-size: 14px;
+  color: #cecece;
+  padding: 0 16px;
 }

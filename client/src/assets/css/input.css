@@ -1,16 +1,26 @@
+.input-container {
+  margin: 73.5px auto 0;
+  width: 70%;
+  height: calc(100% - 73.5px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .back {
   width: 28px;
   cursor: pointer;
 }
 
 .title {
-  margin: 16px 0 8px;
+  margin: 24px 0 8px;
   padding: 0 16px;
   font-size: 24px;
 }
 
 textarea,
-input[name="title"] {
+input[name="title"],
+.title + p {
   width: calc(100% - 32px);
   height: 32px;
   line-height: 32px;
@@ -19,12 +29,14 @@ input[name="title"] {
   border: none;
 }
 
-input[name="title"] {
+input[name="title"],
+.title + p {
   padding-left: 8px;
   border-bottom: 1px solid #cecece;
 }
 
-textarea {
+textarea,
+.title:nth-of-type(4) + p {
   border: 1px solid #cecece;
   border-radius: 8px;
   margin-bottom: 16px;

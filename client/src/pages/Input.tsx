@@ -2,21 +2,22 @@ import "../assets/css/input.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { ITodo, MODE } from "../types/todo";
 import { useState } from "react";
-import { useMutation, useQuery } from "react-query";
+import { useMutation } from "react-query";
 import { createTodo, updateTodo } from "../services/mutations";
 import { Loading, Modal } from "../components";
 import { getErrorMessage } from "../utils";
-import { getTodo } from "../services/queries";
+import queryClient from "../config/queryClient";
 
 interface Props {
   mode: MODE;
+  todo?: ITodo;
 }
 
 export default function Input({ mode }: Props) {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const [todo, setTodo] = useState<ITodo>({
+  const [registerTodo, setRegisterTodo] = useState<ITodo>({
     title: "",
     content: "",
   });
@@ -26,37 +27,24 @@ export default function Input({ mode }: Props) {
   ) => {
     const { name, value } = e.target;
 
-    setTodo({
-      ...todo,
+    setRegisterTodo({
+      ...registerTodo,
       [name]: value,
     });
   };
 
   const createMutation = useMutation(createTodo);
   const updateMutation = useMutation(updateTodo);
-  const { isLoading, isError } = useQuery(
-    ["todo"],
-    async () => {
-      const data = await getTodo(id || "");
-
-      setTodo({
-        ...data,
-      });
-    },
-    {
-      enabled: mode !== "CREATE",
-    }
-  );
 
   const todoHandler = async () => {
     switch (mode) {
       case "CREATE":
-        await createMutation.mutateAsync({ ...todo });
+        await createMutation.mutateAsync({ ...registerTodo });
 
         break;
 
       case "UPDATE":
-        await updateMutation.mutateAsync({ ...todo, id });
+        await updateMutation.mutateAsync({ ...registerTodo, id });
 
         break;
     }
@@ -64,14 +52,12 @@ export default function Input({ mode }: Props) {
 
   return (
     <div className="wrapper">
-      {(createMutation.isLoading || updateMutation.isLoading || isLoading) && (
-        <Loading />
-      )}
+      {(createMutation.isLoading || updateMutation.isLoading) && <Loading />}
 
-      {(createMutation.isError || updateMutation.isError || isError) && (
+      {(createMutation.isError || updateMutation.isError) && (
         <Modal
           message={getErrorMessage(
-            createMutation.error || updateMutation.error || isError
+            createMutation.error || updateMutation.error
           )}
         />
       )}
@@ -80,6 +66,12 @@ export default function Input({ mode }: Props) {
         <Modal
           message={`${mode === "CREATE" ? "신규 생성" : "수정"} 완료`}
           onClickHandler={() => {
+            if (mode === "UPDATE") {
+              queryClient.invalidateQueries({ queryKey: ["todo", id] });
+            }
+
+            queryClient.invalidateQueries({ queryKey: ["todos"] });
+
             navigate("/");
           }}
         />
@@ -94,30 +86,28 @@ export default function Input({ mode }: Props) {
         />
       </div>
 
-      <p className="title">제목</p>
-      <input
-        type="text"
-        name="title"
-        placeholder="제목을 입력해주세요"
-        onChange={onChangeHandler}
-        readOnly={mode === "READ"}
-        value={todo.title}
-      />
+      <div className="input-container">
+        <p className="title">제목</p>
+        <input
+          type="text"
+          name="title"
+          placeholder="제목을 입력해주세요"
+          onChange={onChangeHandler}
+          value={registerTodo.title}
+        />
 
-      <p className="title">내용</p>
-      <textarea
-        placeholder="내용을 입력해주세요"
-        name="content"
-        readOnly={mode === "READ"}
-        onChange={onChangeHandler}
-        value={todo.content}
-      />
+        <p className="title">내용</p>
+        <textarea
+          placeholder="내용을 입력해주세요"
+          name="content"
+          onChange={onChangeHandler}
+          value={registerTodo.content}
+        />
 
-      {mode !== "READ" && (
         <button type="button" className="submit" onClick={todoHandler}>
           {mode === "CREATE" ? "생성" : "수정"}
         </button>
-      )}
+      </div>
     </div>
   );
 }

@@ -1,11 +1,14 @@
 .wrapper {
-  width: 500px;
-  height: fit-content;
+  width: 1000px;
+  height: 550px;
   box-shadow: 0 0 5px #2222225f;
   position: relative;
 }
 
 .toggle-wrapper {
+  width: 100%;
+  height: 56px;
+  line-height: 56px;
   display: flex;
   font-size: 24px;
   margin: 32px 0 24px;
@@ -37,7 +40,10 @@
 
 .input-wrapper {
   width: 100%;
+  height: calc(100% - 112px);
   padding: 0 16px;
+  display: flex;
+  flex-direction: column;
 }
 
 .input-wrapper input {
@@ -66,7 +72,7 @@
   border-radius: 8px;
   background-color: #fc596c;
   color: #ffffff;
-  margin-bottom: 24px;
+  margin: auto 0 32px;
   cursor: pointer;
 }
 

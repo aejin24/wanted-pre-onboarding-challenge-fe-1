@@ -1,4 +1,4 @@
-export type MODE = "CREATE" | "UPDATE" | "READ";
+export type MODE = "CREATE" | "UPDATE";
 
 export interface ITodo {
   id?: string;

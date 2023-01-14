@@ -12,7 +12,7 @@ export default function Auth() {
   const [mode, setMode] = useState<MODE>("LOGIN");
   const [userInfo, setUserInfo] = useState<IAuth>({
     email: "",
-    password: ""
+    password: "",
   });
   const navigate = useNavigate();
 
@@ -21,15 +21,18 @@ export default function Auth() {
 
     setUserInfo({
       ...userInfo,
-      [name]: value
+      [name]: value,
     });
 
-    if (/[a-z0-9]+@[a-z0-9]+\.[a-z0-9]{2,}$/i.test(userInfo.email) && userInfo.password.length > 6) {
+    if (
+      /[a-z0-9]+@[a-z0-9]+\.[a-z0-9]{2,}$/i.test(userInfo.email) &&
+      userInfo.password.length > 6
+    ) {
       submitHandler.current!.disabled = false;
     } else {
       submitHandler.current!.disabled = true;
     }
-  }
+  };
 
   // mutation은 unique key가 필요 없음
   const { mutateAsync, error, isError, isLoading } = useMutation(auth);
@@ -48,8 +51,8 @@ export default function Auth() {
         setMode("LOGIN");
         setUserInfo({
           email: "",
-          password: ""
-        })
+          password: "",
+        });
       }
     }
   };
@@ -67,14 +70,18 @@ export default function Auth() {
       <div className="toggle-wrapper">
         <button
           className={`${mode === "LOGIN" && "active"}`}
-          onClick={() => { setMode("LOGIN") }}
+          onClick={() => {
+            setMode("LOGIN");
+          }}
         >
           로그인
         </button>
         /
         <button
           className={`${mode === "REGISTER" && "active"}`}
-          onClick={() => { setMode("REGISTER") }}
+          onClick={() => {
+            setMode("REGISTER");
+          }}
         >
           회원가입
         </button>
@@ -94,11 +101,7 @@ export default function Auth() {
           onChange={onChangeHandler}
         />
 
-        <button
-          ref={submitHandler}
-          onClick={onSubmitHandler}
-          type="button"
-        >
+        <button ref={submitHandler} onClick={onSubmitHandler} type="button">
           {mode === "LOGIN" ? "로그인" : "회원가입"}
         </button>
       </div>
