@@ -12,7 +12,6 @@
 
 - hoc로 auth 분리 (useEffect 내에서 token 체크 안하기 위함)
 - protectrouter (공식 doc에서 권장)
-- 상태관리 저장 (새로 고침하면 다 날라감)
 - error를 unknown 으로 받는 이유는?
 
 <br>

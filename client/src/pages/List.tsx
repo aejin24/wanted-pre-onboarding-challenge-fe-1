@@ -21,7 +21,9 @@ export default function List() {
   const { isLoading, error, isError } = useQuery(["todos"], async () => {
     const data = await getTodos();
 
-    dispatch(RAddTodo(data));
+    if (todos.length === 0) {
+      dispatch(RAddTodo(data));
+    }
   });
 
   useEffect(() => {

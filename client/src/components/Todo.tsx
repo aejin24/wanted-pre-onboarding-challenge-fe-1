@@ -17,7 +17,7 @@ export default function Todo({ todos }: Props) {
             key={t.id}
             className="todo"
             onClick={() => {
-              setTargetId(t.id || "");
+              setTargetId(t.id!);
             }}
           >
             {t.title}
@@ -25,14 +25,7 @@ export default function Todo({ todos }: Props) {
         ))}
       </div>
 
-      {targetId !== "" ? (
-        <Detail
-          todo={todos.filter((t) => t.id === targetId)[0]}
-          setTargetId={setTargetId}
-        />
-      ) : (
-        <div />
-      )}
+      <Detail todo={todos.filter((t) => t.id === targetId)[0]} />
     </div>
   );
 }
