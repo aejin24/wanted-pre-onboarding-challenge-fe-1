@@ -5,7 +5,7 @@ import { useMutation } from "react-query";
 import { auth } from "../services/mutations";
 import { useNavigate } from "react-router-dom";
 import { getErrorMessage } from "../utils";
-import { Modal, Loading } from "../components";
+import { Modal, Loading } from "../components/common";
 
 export default function Auth() {
   const submitHandler = useRef<HTMLButtonElement>(null);

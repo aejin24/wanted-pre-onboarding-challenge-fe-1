@@ -1,7 +1,7 @@
 import "../assets/css/list.css";
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Loading, Modal, Todo } from "../components";
+import { Todo } from "../components";
+import { Loading, Modal } from "../components/common";
 import { useQuery } from "react-query";
 import { getTodos } from "../services/queries";
 import { getErrorMessage } from "../utils";
@@ -25,12 +25,6 @@ export default function List() {
       dispatch(RAddTodo(data));
     }
   });
-
-  useEffect(() => {
-    if (!localStorage.getItem("token")) {
-      navigate("/auth");
-    }
-  }, [navigate]);
 
   return (
     <div className="wrapper">

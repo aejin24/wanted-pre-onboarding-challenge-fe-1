@@ -4,7 +4,7 @@ import { ITodo, ITodoResponse, MODE } from "../types/todo";
 import { useEffect, useState } from "react";
 import { useMutation } from "react-query";
 import { createTodo, updateTodo } from "../services/mutations";
-import { Loading, Modal } from "../components";
+import { Loading, Modal } from "../components/common";
 import { getErrorMessage } from "../utils";
 import { useDispatch, useSelector } from "react-redux";
 import { RAddTodo, RUpdateTodo } from "../redux/todoSlice";

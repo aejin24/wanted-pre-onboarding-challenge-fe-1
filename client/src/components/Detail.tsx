@@ -5,8 +5,7 @@ import { RDeleteTodo } from "../redux/todoSlice";
 import { deleteTodo } from "../services/mutations";
 import { ITodoResponse } from "../types/todo";
 import { convertGMTtoLocal, getErrorMessage } from "../utils";
-import Loading from "./Loading";
-import Modal from "./Modal";
+import { Modal, Loading } from "./common";
 
 interface Props {
   todo: ITodoResponse;
